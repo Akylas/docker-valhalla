@@ -18,8 +18,14 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Get repository lowercase
+        run: |
+            export REPOSITORY=${{ github.repository }}
+            echo "REPOSITORY_LOWER=$(echo "$REPOSITORY" | tr "[:upper:]" "[:lower:]")" >>${GITHUB_ENV}
+            echo "REPOSITORY_LOWER=${{ env.REPOSITORY_LOWER }}"
+
       - name: Build latest image
         run: |
           sed -i "s/:latest/:manually_triggered_build_amd64/g" Dockerfile
-          docker build -t ghcr.io/${{ github.repository }}/valhalla:manually_triggered_build_amd64 .
-          docker push ghcr.io/${{ github.repository }}/valhalla:manually_triggered_build_amd64
+          docker build -t ghcr.io/${{ env.REPOSITORY_LOWER }}/valhalla:manually_triggered_build_amd64 .
+          docker push ghcr.io/${{ env.REPOSITORY_LOWER }}/valhalla:manually_triggered_build_amd64

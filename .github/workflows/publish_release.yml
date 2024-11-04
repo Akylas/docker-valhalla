@@ -20,6 +20,12 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Get repository lowercase
+        run: |
+            export REPOSITORY=${{ github.repository }}
+            echo "REPOSITORY_LOWER=$(echo "$REPOSITORY" | tr "[:upper:]" "[:lower:]")" >>${GITHUB_ENV}
+            echo "REPOSITORY_LOWER=${{ env.REPOSITORY_LOWER }}"
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -29,4 +35,4 @@ jobs:
 
       - name: Build container image
         run: |
-            docker buildx build --push --platform linux/amd64,linux/arm64 --tag ghcr.io/${{ github.repository }}/valhalla:${{ steps.extract_branch.outputs.branch }} .
+            docker buildx build --push --platform linux/amd64,linux/arm64 --tag ghcr.io/${{ env.REPOSITORY_LOWER }}/valhalla:${{ steps.extract_branch.outputs.branch }} .
