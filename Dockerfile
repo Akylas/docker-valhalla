@@ -2,9 +2,9 @@
 # remove a few superfluous things and
 # create a new runner image from ubuntu:24.04
 # with the previous runner's artifacts
-ARG VALHALLA_BUILDER_IMAGE=ghcr.io/valhalla/valhalla:latest
+ARG VALHALLA_BUILDER_IMAGE=ghcr.io/akylas/valhalla:latest
 FROM $VALHALLA_BUILDER_IMAGE as builder
-MAINTAINER Nils Nolde <nils@gis-ops.com>
+MAINTAINER Martin Guillon <contact@akylas.fr>
 
 # remove some stuff from the original image
 RUN cd /usr/local/bin && \
@@ -14,7 +14,7 @@ RUN cd /usr/local/bin && \
   cd .. && mv $preserve ./bin
 
 FROM ubuntu:24.04 as runner_base
-MAINTAINER Nils Nolde <nils@gis-ops.com>
+MAINTAINER Martin Guillon <contact@akylas.fr>
 
 RUN apt-get update > /dev/null && \
   export DEBIAN_FRONTEND=noninteractive && \
