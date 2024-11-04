@@ -1,15 +1,6 @@
 name: publish latest
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 0 * * 6'
-  push:
-    branches:
-      - 'master'
-    paths-ignore:
-      - '.gitignore'
-      - '**.md'
-      - '**.template'
 
 jobs:
   publish:
